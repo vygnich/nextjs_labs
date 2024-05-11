@@ -18,14 +18,16 @@
     "db:reset": "env-cmd -f .env.dev ts-node prisma/db-reset.ts",
     "db:reset:prod": "env-cmd -f .env ts-node prisma/db-reset.ts",
     "db:push": "env-cmd -f .env.dev prisma db push",
-    "db:push:prod": "env-cmd -f .env.prod prisma db push"
+    "db:push:prod": "env-cmd -f .env prisma db push"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.0.0",
     "@next/env": "^14.2.3",
     "@prisma/client": "^5.13.0",
     "@vercel/postgres": "^0.8.0",
     "env-cmd": "^10.1.0",
     "next": "14.2.3",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
     "ts-node": "^10.9.2",

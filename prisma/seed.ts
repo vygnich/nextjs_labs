@@ -59,9 +59,9 @@ const generateCarts = async (count: number) => {
 
 export async function seedDb() {
     await generateUsers(50);
-    await generateProducts(100); // category
-    await generateOrders(50); // user, products
-    await generateCarts(100); // user, products
+    await generateProducts(100);
+    await generateOrders(50);
+    await generateCarts(100);
 }
 
 seedDb()
