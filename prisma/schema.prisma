@@ -31,6 +31,7 @@ model User {
   image         String?
   Order         Order[]
   Cart          Cart[]
+  Product       Product[]
 }
 
 model Order {
@@ -60,6 +61,9 @@ model Product {
   orderId       String?
   Cart          Cart[]
   OrderProducts OrderProducts[]
+  userId        String?
+  user          User?            @relation(fields: [userId], references: [id])
+
 
   @@index([title])
 }

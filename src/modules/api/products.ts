@@ -15,6 +15,11 @@ export const getProductById = async (id: string) => {
     return product;
 };
 
+export const getProductByUser = async (id: string) => {
+    const products = await db.product.findMany({ where: { userId: id } });
+    return products;
+};
+
 export const deleteProduct = async (id: string) => {
     const product = await db.product.delete({ where: { id } });
     return product;

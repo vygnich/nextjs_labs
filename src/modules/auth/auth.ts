@@ -7,13 +7,18 @@ import { DefaultSession, getServerSession, NextAuthOptions } from 'next-auth';
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
 import { PrismaClient } from "@prisma/client"
+import {faker} from "@faker-js/faker";
+
 
 const prisma = new PrismaClient()
 
 declare module 'next-auth' {
     interface Session {
         user: DefaultSession['user'] & {
-            id: string;
+            id: string,
+            name?: string;
+            email?: string;
+            image?: string;
         };
     }
 }
@@ -28,15 +33,25 @@ export type AuthSession = {
 };
 export const authOptions :NextAuthOptions  = {
     callbacks: {
-        session: ({ session }) => {
-            const user = db.user.findUnique({
+        session: async function AuthUser ({ session }) {
+            let user = await db.user.findUnique({
                 where: {
                     email: session.user.email!,
                 }
             })
+            if (!user){
+                user = await db.user.create({
+                    data: {
+                        email: session.user.email,
+                        name: session.user.name,
+                    },
+                })
+            }
             return ({
             ...session,
-            ...user
+                user: {
+                    ...user
+                }
         })},
     },
     providers: [
@@ -59,6 +74,5 @@ export const getUserAuth = async () => {
 
 export const checkAuth = async () => {
     const session = await getUserAuth();
-    console.log(session)
     if (!session) redirect('/api/auth/signin');
 };

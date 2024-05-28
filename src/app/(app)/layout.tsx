@@ -1,11 +1,10 @@
 "use client"
-// import { checkAuth } from '@/lib/auth/utils';
-// import { Toaster } from '@/components/ui/sonner';
 
-import { ReactNode } from 'react';
 import {SessionProvider} from "next-auth/react";
-import Header from "@/components/Header";
-export default async function AppLayout({children,}: Readonly<{
+import Cart from "@/components/Cart";
+import {getUser} from "@/modules/api/account";
+
+export default  function AppLayout({children,}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
@@ -17,7 +16,6 @@ export default async function AppLayout({children,}: Readonly<{
                     </main>
                 </div>
             </SessionProvider>
-
         </main>
     );
 }

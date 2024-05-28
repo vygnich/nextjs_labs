@@ -1,5 +1,7 @@
 import { checkAuth, getUserAuth } from '@/modules/auth/auth';
 import SignOutBtn from "@/components/SignOut";
+import {ProfileSettingsForm} from "@/components/ProfileSettingsForm";
+import {AuthSession} from "@/modules/types";
 
 export default async function Account() {
     await checkAuth();
@@ -11,6 +13,12 @@ export default async function Account() {
                 <pre>{JSON.stringify(session, null, 2) }</pre>
             </div>
             <SignOutBtn/>
+            {
+                session ?
+                    <ProfileSettingsForm session={session} />
+                    :
+                    ""
+            }
         </main>
     );
 }

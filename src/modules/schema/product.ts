@@ -21,3 +21,5 @@ export const productIdSchema = baseSchema.pick({ id: true });
 // Types for products - used to type API request params and within Components
 
 // this type infers the return from getProducts() - meaning it will include any joins
+export type Product = z.infer<typeof baseSchema>;
+export type InsertProductParams = z.infer<typeof insertProductParams>;
