@@ -9,7 +9,6 @@ export default function ATCButton(product: Product){
     const {
         errors, hasErrors, setErrors, handleChange,
     } = useValidatedForm<Product>(insertProductParams);
-    console.log("errors", errors)
     const router = useRouter()
     const handleATC = async () => {
         try {
@@ -25,7 +24,7 @@ export default function ATCButton(product: Product){
     }
     return (
         <button onClick={handleATC}
-            className="w-full bg-gray-90classNamek:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">Add
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save
             to Cart
         </button>
     );

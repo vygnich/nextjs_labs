@@ -1,7 +1,8 @@
 import { checkAuth, getUserAuth } from '@/modules/auth/auth';
 import SignOutBtn from "@/components/SignOut";
 import {ProfileSettingsForm} from "@/components/ProfileSettingsForm";
-import {AuthSession} from "@/modules/types";
+import {AuthSession, Roles, RoleStatus} from "@/modules/types";
+import SellerForm from "@/components/SellerForm";
 
 export default async function Account() {
     await checkAuth();
@@ -15,7 +16,15 @@ export default async function Account() {
             <SignOutBtn/>
             {
                 session ?
-                    <ProfileSettingsForm session={session} />
+                    <>
+                        <ProfileSettingsForm session={session} />
+                        {
+                            session.user.role == Roles.USER ?
+                                <SellerForm session={session}/>
+                                :""
+                        }
+
+                    </>
                     :
                     ""
             }

@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import {getUserAuth} from "@/modules/auth/auth";
 import {useState} from "react";
+import {Roles, RoleStatus} from "@/modules/types";
 
 
 export default async function Header (){
@@ -12,7 +13,7 @@ export default async function Header (){
     ];
 
     const user = await getUserAuth()
-    if (user){
+    if (user && user.user.roleStatus == RoleStatus.APPROVED && (user.user.role == Roles.SELLER || user.user.role == Roles.ADMIN)){
         links = [...links, ...[{
             href: "/admin",
             title: "Admin"

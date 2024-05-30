@@ -22,16 +22,31 @@ generator zod {
   useDecimalJs          = true
   prismaJsonNullability = true
 }
+enum Role {
+  USER
+  ADMIN
+  SELLER
+}
+enum RoleStatus  {
+  APPROVED
+  REJECTED
+  INPROGRESS
+}
+
+
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
+  role          Role       @default(USER)
+  roleStatus    RoleStatus @default(APPROVED)
   emailVerified DateTime?
   image         String?
   Order         Order[]
   Cart          Cart[]
   Product       Product[]
+  AdminMessage  AdminMessage?
 }
 
 model Order {
@@ -86,4 +101,12 @@ model OrderProducts {
   order     Order   @relation(fields: [orderId], references: [id])
   orderId   String
   count     Int
+}
+
+
+model AdminMessage {
+  id        String  @id @default(cuid())
+  userId    String  @unique
+  user      User    @relation(fields: [userId], references: [id])
+  message   String
 }

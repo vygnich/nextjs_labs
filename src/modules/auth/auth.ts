@@ -7,6 +7,7 @@ import { DefaultSession, getServerSession, NextAuthOptions } from 'next-auth';
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
 import { PrismaClient } from "@prisma/client"
+import {User} from "@/modules/schema/account"
 import {faker} from "@faker-js/faker";
 
 
@@ -14,21 +15,12 @@ const prisma = new PrismaClient()
 
 declare module 'next-auth' {
     interface Session {
-        user: DefaultSession['user'] & {
-            id: string,
-            name?: string;
-            email?: string;
-            image?: string;
-        };
+        user: User;
     }
 }
 export type AuthSession = {
     session: {
-        user: {
-            id: string;
-            name?: string;
-            email?: string;
-        };
+        user: User;
     } | null;
 };
 export const authOptions :NextAuthOptions  = {

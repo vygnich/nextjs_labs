@@ -10,7 +10,6 @@ export async function GET(req: Request, res: NextResponse){
         if (!userId) {
             return NextResponse.json({ error: 'User ID is required' }, { status: 500 });
         }
-    console.log("userId", userId)
         try {
             const cart = await db.cart.findMany({
                 where: { userId },
@@ -25,7 +24,6 @@ export async function POST(req: Request, res: NextResponse){
 
     const body  = await req.json()
     const { userId, productId, count }  = body;
-    console.log("req.body", body)
     if (!userId || !productId || !count) {
     return NextResponse.json({ error: 'User ID, Product ID, and Count are required' }, { status: 200 });
     }

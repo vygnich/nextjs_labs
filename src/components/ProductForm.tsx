@@ -7,11 +7,10 @@ import { useRouter } from 'next/navigation'
 const inputStyle = "text-gray-900 border-gray-300 dark:border-gray-600 dark:focus:border-blue-500 focus:border-blue-600"
 
 const errorInputStyle = "text-red-900 border-red-300 dark:border-red-600 dark:focus:border-red-500 focus:border-red-600"
-export default function ProductForm(product: Product | undefined = undefined){
+export default function ProductForm({product = null}: {product: Product | null}){
     const {
         errors, hasErrors, setErrors, handleChange,
     } = useValidatedForm<Product>(insertProductParams);
-    console.log("errors", errors)
     const router = useRouter()
     const handleSubmit = async (data: FormData) => {
         const payload = Object.fromEntries(data.entries());

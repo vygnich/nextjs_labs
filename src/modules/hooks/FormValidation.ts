@@ -30,9 +30,7 @@ export function useValidatedForm<Entity>(insertEntityZodSchema: ZodSchema) {
                     ...prev,
                     [field]: fieldError,
                 }));
-                console.log("errors", {
-                    [field]: fieldError,
-                })
+
             }
         }
     };

@@ -1,6 +1,9 @@
 "use server"
 import { db } from '@/modules/db';
 import {checkAuth, getUserAuth} from "@/modules/auth/auth";
+import {Roles} from "@/modules/types";
+import {RoleStatus} from "@prisma/client";
+
 
 
 
@@ -33,4 +36,20 @@ export const getUserCart = async () => {
     return cart;
 }
 
+
+export const updateUserStatus = async (role: Roles, roleStatus: RoleStatus, userId: string | undefined = undefined) => {
+    if(!userId){
+        await checkAuth()
+        const session = await getUserAuth()
+        if(!session) return
+        userId = session.user.id
+    }
+    const user = await db.user.update({ where: { id: userId },
+        data: {
+            role: role,
+            roleStatus: roleStatus
+        }
+    });
+    return user;
+};
 
