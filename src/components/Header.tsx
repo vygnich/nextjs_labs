@@ -21,7 +21,7 @@ export default async function Header (){
     }
 
 
-    return (<div className=" md:p-8 mb-4 pb-2 w-full flex items-center">
+    return (<div className=" p-8 mb-4 pb-2 w-full flex items-center">
         <div className="font-semibold text-lg">Logo</div>
         <div className="px-4 bg-muted">
             <ul className="flex ">
