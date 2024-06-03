@@ -1,6 +1,8 @@
 import {getAllProducts} from "@/modules/api/products";
 import ProductCard from "@/components/Product";
 import {Product} from "@/modules/schema/product";
+import {Suspense} from "react";
+import {LoadingCard} from "@/app/(app)/products/loading";
 
 
 export default async function Products() {
@@ -11,8 +13,11 @@ export default async function Products() {
             {
                 products.map(product => (
                     <div key={product.id} className="rounded overflow-hidden shadow-lg flex flex-col">
+                        <Suspense fallback={<LoadingCard/>}>
                         <ProductCard {...product}/>
+                        </Suspense>
                     </div>
+
                 ))
             }
             </div>

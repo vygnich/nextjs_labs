@@ -4,6 +4,8 @@ import {redirect} from "next/navigation";
 import {getUser} from "@/modules/api/account";
 import axios from 'axios';
 import ATCButton from "@/components/ATCButton";
+import {Suspense} from "react";
+import Loading from "@/app/(app)/products/[id]/loading";
 
 interface Props {
     params: {
@@ -13,7 +15,6 @@ interface Props {
 export default async function ProductPage({params}: Props) {
     const product = await getProductById(params.id)
     if (!product) redirect('/404');
-    const user  = await getUser()
 
 
 
