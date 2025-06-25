@@ -1,26 +1,17 @@
-import {getAllProducts} from "@/modules/api/products";
-import ProductCard from "@/components/Product";
-import {Product} from "@/modules/schema/product";
-import {Suspense} from "react";
-import {LoadingCard} from "@/app/(app)/products/loading";
+import { getProducts } from '@/lib/api/products/queries';
+import { Suspense } from 'react';
+import Loading from '@/app/(app)/loading';
+import { ProductsGrid } from '@/components/products';
+import { getProductIdsInCart } from '@/lib/api/carts/queries';
+import { getProductIdsInFavorites } from '@/lib/api/favorites/queries';
 
-
-export default async function Products() {
-    const products : Product[] = await getAllProducts()
-    return (
-        <main className="flex min-h-screen flex-col items-center justify-between">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-            {
-                products.map(product => (
-                    <div key={product.id} className="rounded overflow-hidden shadow-lg flex flex-col">
-                        <Suspense fallback={<LoadingCard/>}>
-                        <ProductCard {...product}/>
-                        </Suspense>
-                    </div>
-
-                ))
-            }
-            </div>
-        </main>
-    );
+export default async function ProductsPage() {
+  const { products } = await getProducts();
+  const productsInCart = await getProductIdsInCart();
+  const productsInFavorite = await getProductIdsInFavorites();
+  return (
+    <Suspense fallback={<Loading />}>
+      <ProductsGrid productsInCart={productsInCart} productsInFavorite={productsInFavorite} products={products} />
+    </Suspense>
+  );
 }

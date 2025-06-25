@@ -2,18 +2,18 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
-import { createProduct, deleteProduct, updateProduct } from '@/lib/api/products/mutations';
-import { insertProductParams, productIdSchema, updateProductParams } from '@/lib/db/schema/products';
+import { createOrder, deleteOrder, updateOrder } from '@/lib/api/orders/mutations';
+import { insertOrderParams, orderIdSchema, updateOrderParams } from '@/lib/db/schema/orders';
 import * as Sentry from '@sentry/nextjs';
 
 export async function POST(req: Request) {
   try {
-    const validatedData = insertProductParams.parse(await req.json());
-    const { product } = await createProduct(validatedData);
+    const validatedData = insertOrderParams.parse(await req.json());
+    const { order } = await createOrder(validatedData);
 
-    revalidatePath('/products'); // optional - assumes you will have named route same as entity
+    revalidatePath('/orders'); // optional - assumes you will have named route same as entity
 
-    return NextResponse.json(product, { status: 201 });
+    return NextResponse.json(order, { status: 201 });
   } catch (err) {
     Sentry.captureException(err);
     if (err instanceof z.ZodError) {
@@ -28,12 +28,12 @@ export async function PUT(req: Request) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 
-    const validatedData = updateProductParams.parse(await req.json());
-    const validatedParams = productIdSchema.parse({ id });
+    const validatedData = updateOrderParams.parse(await req.json());
+    const validatedParams = orderIdSchema.parse({ id });
 
-    const { product } = await updateProduct(validatedParams.id, validatedData);
+    const { order } = await updateOrder(validatedParams.id, validatedData);
 
-    return NextResponse.json(product, { status: 200 });
+    return NextResponse.json(order, { status: 200 });
   } catch (err) {
     Sentry.captureException(err);
     if (err instanceof z.ZodError) {
@@ -48,12 +48,11 @@ export async function DELETE(req: Request) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 
-    const validatedParams = productIdSchema.parse({ id });
-    const { product } = await deleteProduct(validatedParams.id);
+    const validatedParams = orderIdSchema.parse({ id });
+    const { order } = await deleteOrder(validatedParams.id);
 
-    return NextResponse.json(product, { status: 200 });
+    return NextResponse.json(order, { status: 200 });
   } catch (err) {
-    Sentry.captureException(err);
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.issues }, { status: 400 });
     }
