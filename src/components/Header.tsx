@@ -1,8 +1,7 @@
-
 import Link from 'next/link';
 import {getUserAuth} from "@/modules/auth/auth";
-import {useState} from "react";
 import {Roles, RoleStatus} from "@/modules/types";
+import SearchPopup from "@/components/SearchPopup";
 
 
 export default async function Header (){
@@ -50,5 +49,7 @@ export default async function Header (){
                 ))}
             </ul>
         </div>
+
+        <SearchPopup/>
     </div>)
 }

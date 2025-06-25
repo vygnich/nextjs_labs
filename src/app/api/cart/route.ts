@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '@/modules/db'
 import {NextResponse} from "next/server";
-import {insertProductParams} from "@/modules/schema/product"; // Make sure you have a prisma instance in lib/prisma.ts
+import {insertProductParams} from "@/modules/schema/product";
 
 
 export async function GET(req: Request, res: NextResponse){
@@ -27,7 +27,6 @@ export async function POST(req: Request, res: NextResponse){
     if (!userId || !productId || !count) {
     return NextResponse.json({ error: 'User ID, Product ID, and Count are required' }, { status: 200 });
     }
-    //
     try {
         const cartItem = await db.cart.create({
             data: {
@@ -42,67 +41,3 @@ export async function POST(req: Request, res: NextResponse){
         return NextResponse.json(error, { status: 500 });
     }
 }
-// const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-//     if (req.method === 'POST') {
-//         const { userId, productId, count } = req.body;
-//
-//         if (!userId || !productId || !count) {
-//             return res.status(400).json({ error: 'User ID, Product ID, and Count are required' });
-//         }
-//
-//         try {
-//             const cartItem = await db.cart.create({
-//                 data: {
-//                     userId,
-//                     productId,
-//                     count,
-//                 },
-//             });
-//
-//             return res.status(200).json(cartItem);
-//         } catch (error) {
-//             return res.status(500).json({ error: 'Failed to add item to cart' });
-//         }
-//     }
-//     else if (req.method === 'PUT') {
-//         const { id, count } = req.body;
-//
-//         if (!id || !count) {
-//             return res.status(400).json({ error: 'ID and Count are required' });
-//         }
-//
-//         try {
-//             const cartItem = await db.cart.update({
-//                 where: { id },
-//                 data: { count },
-//             });
-//
-//             return res.status(200).json(cartItem);
-//         } catch (error) {
-//             return res.status(500).json({ error: 'Failed to update cart item' });
-//         }
-//     }
-//     else if (req.method === 'DELETE') {
-//         const { id } = req.body;
-//
-//         if (!id) {
-//             return res.status(400).json({ error: 'ID is required' });
-//         }
-//
-//         try {
-//             const cartItem = await db.cart.delete({
-//                 where: { id },
-//             });
-//
-//             return res.status(200).json(cartItem);
-//         } catch (error) {
-//             return res.status(500).json({ error: 'Failed to delete cart item' });
-//         }
-//     }
-//     else {
-//         res.setHeader('Allow', ['GET']);
-//         res.status(405).end(`Method ${req.method} Not Allowed`);
-//     }
-// }
-//
-// export default handler;
