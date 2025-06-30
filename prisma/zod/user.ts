@@ -1,22 +1,27 @@
 import * as z from "zod"
-import { Role, RoleStatus } from "@prisma/client"
-import { CompleteOrder, relatedOrderSchema, CompleteCart, relatedCartSchema, CompleteProduct, relatedProductSchema, CompleteAdminMessage, relatedAdminMessageSchema } from "./index"
+import { UserRole } from "@prisma/client"
+import { CompleteAccount, relatedAccountSchema, CompleteSession, relatedSessionSchema, CompleteOrder, relatedOrderSchema, CompleteFeedback, relatedFeedbackSchema, CompleteCart, relatedCartSchema, CompleteFavorite, relatedFavoriteSchema } from "./index"
 
 export const userSchema = z.object({
   id: z.string(),
   name: z.string().nullish(),
   email: z.string().nullish(),
-  role: z.nativeEnum(Role),
-  roleStatus: z.nativeEnum(RoleStatus),
   emailVerified: z.date().nullish(),
   image: z.string().nullish(),
+  dateOfBirth: z.date().nullish(),
+  successPurchases: z.number().int().nullish(),
+  failPurchases: z.number().int().nullish(),
+  bonuses: z.number().int().nullish(),
+  role: z.nativeEnum(UserRole),
 })
 
 export interface CompleteUser extends z.infer<typeof userSchema> {
-  Order: CompleteOrder[]
-  Cart: CompleteCart[]
-  Product: CompleteProduct[]
-  AdminMessage?: CompleteAdminMessage | null
+  accounts: CompleteAccount[]
+  sessions: CompleteSession[]
+  orders: CompleteOrder[]
+  feedbacks: CompleteFeedback[]
+  carts: CompleteCart[]
+  favorites: CompleteFavorite[]
 }
 
 /**
@@ -25,8 +30,10 @@ export interface CompleteUser extends z.infer<typeof userSchema> {
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
 export const relatedUserSchema: z.ZodSchema<CompleteUser> = z.lazy(() => userSchema.extend({
-  Order: relatedOrderSchema.array(),
-  Cart: relatedCartSchema.array(),
-  Product: relatedProductSchema.array(),
-  AdminMessage: relatedAdminMessageSchema.nullish(),
+  accounts: relatedAccountSchema.array(),
+  sessions: relatedSessionSchema.array(),
+  orders: relatedOrderSchema.array(),
+  feedbacks: relatedFeedbackSchema.array(),
+  carts: relatedCartSchema.array(),
+  favorites: relatedFavoriteSchema.array(),
 }))

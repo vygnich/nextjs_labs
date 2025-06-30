@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { getUserAuth } from '@/lib/auth/utils';
 import { NavbarDropdown } from '@/components/layout';
 import { getCartsCount } from '@/lib/api/carts/queries';
-import logo from '@/public/svg/logo.svg';
+// import logo from '@/public/svg/logo.svg';
 import Image from 'next/image';
 import { UserRole } from '@/lib/types';
 import { SearchInput } from '@/components/search/SearchInput';
@@ -38,7 +38,7 @@ export default async function AppLayout({ children }: Props) {
       <header className="flex h-16 w-full items-center justify-between bg-bg-dark px-4 shadow-sm dark:bg-gray-950 sm:px-6 lg:px-8 gap-5">
         <div className="flex items-center gap-4">
           <Link href="/">
-            <Image width={250} src={logo} alt="Logo" />
+            {/*<Image width={250} src={logo} alt="Logo" />*/}
           </Link>
           <Link href="/">
             <div className="font-impact text-app w-36"> Marina`s Heat Store</div>

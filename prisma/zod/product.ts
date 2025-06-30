@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { CompleteOrder, relatedOrderSchema, CompleteCart, relatedCartSchema, CompleteOrderProducts, relatedOrderProductsSchema, CompleteUser, relatedUserSchema } from "./index"
+import { CompleteCategory, relatedCategorySchema, CompleteFeedback, relatedFeedbackSchema, CompleteOrderProducts, relatedOrderProductsSchema, CompleteCart, relatedCartSchema, CompleteFavorite, relatedFavoriteSchema } from "./index"
 
 export const productSchema = z.object({
   id: z.string(),
@@ -9,15 +9,15 @@ export const productSchema = z.object({
   price: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  orderId: z.string().nullish(),
-  userId: z.string().nullish(),
+  categoryId: z.string(),
 })
 
 export interface CompleteProduct extends z.infer<typeof productSchema> {
-  Order?: CompleteOrder | null
+  category: CompleteCategory
+  feedback: CompleteFeedback[]
+  orderProducts: CompleteOrderProducts[]
   Cart: CompleteCart[]
-  OrderProducts: CompleteOrderProducts[]
-  user?: CompleteUser | null
+  Favorite: CompleteFavorite[]
 }
 
 /**
@@ -26,8 +26,9 @@ export interface CompleteProduct extends z.infer<typeof productSchema> {
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
 export const relatedProductSchema: z.ZodSchema<CompleteProduct> = z.lazy(() => productSchema.extend({
-  Order: relatedOrderSchema.nullish(),
+  category: relatedCategorySchema,
+  feedback: relatedFeedbackSchema.array(),
+  orderProducts: relatedOrderProductsSchema.array(),
   Cart: relatedCartSchema.array(),
-  OrderProducts: relatedOrderProductsSchema.array(),
-  user: relatedUserSchema.nullish(),
+  Favorite: relatedFavoriteSchema.array(),
 }))

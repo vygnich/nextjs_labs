@@ -13,6 +13,7 @@ interface Props {
 }
 
 export default async function ProductIdPage({ params }: Props) {
+  console.log('params.id', params.id);
   const { product } = await getProductById(params.id);
 
   const images = [
