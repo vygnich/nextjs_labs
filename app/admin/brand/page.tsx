@@ -1,40 +1,36 @@
 import { Suspense } from 'react';
 import {notFound, redirect} from 'next/navigation';
 
-import { getProductById } from '@/lib/api/products/queries';
+import { getBrand } from '@/lib/api/brand/queries';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/(app)/loading';
-import OptimisticProduct from './OptimisticProduct';
+import OptimisticBrand from './OptimisticBrand';
 import {checkAccessProduct} from "@/lib/actions/products";
 
 export const revalidate = 0;
 
-async function Product({ id }: { id: string }) {
-    const access = await checkAccessProduct(id);
-    (!access) && notFound();
+async function Brand() {
+    // const access = await checkAccessProduct(id);
+    // (!access) && notFound();
 
-    const { product } = await getProductById(id);
+    const { brand } = await getBrand();
 
-  if (!product) notFound();
+  if (!brand) notFound();
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
         <BackButton currentResource="products" />
-        <OptimisticProduct product={product} />
+        <OptimisticBrand brand={brand} />
       </div>
     </Suspense>
   );
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: { productId: string };
-}) {
+export default async function BrandPage() {
   return (
     <main className="overflow-auto">
-      <Product id={params.productId} />
+      <Brand />
     </main>
   );
 }

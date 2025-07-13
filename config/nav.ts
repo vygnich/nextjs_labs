@@ -39,3 +39,33 @@ export const additionalLinks: AdditionalLinks[] = [
     ],
   },
 ] as const;
+
+
+export const sellerLinks: AdditionalLinks[] = [
+  {
+    title: 'Sellers',
+    links: [
+      {
+        href: '/admin/seller-request',
+        title: 'Seller requests',
+        icon: Globe,
+      }
+    ],
+  },
+] as const;
+
+
+export const brandLink: AdditionalLinks[] = [
+  {
+    title: 'Бренд',
+    links: [
+      {
+        href: '/admin/brand',
+        title: 'Бренд',
+        icon: Globe,
+      }
+    ],
+  },
+] as const;
+
+

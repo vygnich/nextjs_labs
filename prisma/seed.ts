@@ -35,6 +35,7 @@ const generateOrders = async (count: number) => {
 
 const generateProducts = async (count: number) => {
   const categories = await db.category.findMany();
+  const brands = await db.brand.findMany();
 
   return timesAsync(count, async () => db.product.create({
     data: {
@@ -43,6 +44,7 @@ const generateProducts = async (count: number) => {
       photo: faker.image.urlPicsumPhotos(),
       price: getRandomNumber(10_000),
       category: connectRandom(categories),
+      brand: connectRandom(brands),
     },
   }));
 };
@@ -54,6 +56,22 @@ const generateCategories = async (count: number) => timesAsync(count, async () =
     photo: faker.image.urlPicsumPhotos(),
   },
 }));
+
+const generateBrands = async (count: number) => {
+  const users = await db.user.findMany();
+
+  await timesAsync(count, async () => {
+    db.brand.create({
+      data: {
+        name: `${faker.lorem.word()} ${getRandomNumber(10_000)}`,
+        description: faker.commerce.productDescription(),
+        photo: faker.image.urlPicsumPhotos(),
+        logo: faker.image.urlPicsumPhotos(),
+        owner: connectRandom(users)
+      },
+    })
+  });
+}
 
 const generateFeedbacks = async (count: number) => {
   const products = await db.product.findMany();
@@ -97,6 +115,7 @@ const generateFavorites = async (count: number) => {
 export async function seedDb() {
   await generateUsers(20);
   await generateCategories(10);
+  await generateBrands(2);
   await generateProducts(100); // category
   await generateOrders(50); // user, products
   await generateFeedbacks(500); // user, products

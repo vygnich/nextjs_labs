@@ -1,12 +1,8 @@
-'use client';
-
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
 import { LucideIcon } from 'lucide-react';
-
-import { cn } from '@/lib/utils';
-import { additionalLinks, defaultLinks } from '@/config/nav';
+import {additionalLinks, brandLink, defaultLinks, sellerLinks} from '@/config/nav';
+import {SidebarLink} from "@/components/ui/SidebarItem";
+import {getUserAuth} from "@/lib/auth/utils";
+import {UserRole} from "@prisma/client";
 
 export interface SidebarLinkType {
   title: string;
@@ -14,33 +10,6 @@ export interface SidebarLinkType {
   icon: LucideIcon;
 }
 
-export function SidebarLink({
-  link,
-  active,
-}: {
-  link: SidebarLinkType;
-  active: boolean;
-}) {
-  return (
-    <Link
-      href={link.href}
-      className={`group transition-colors p-2 inline-block hover:bg-popover hover:text-primary text-muted-foreground text-xs hover:shadow rounded-md w-full${
-        active ? ' text-primary font-semibold' : ''
-      }`}
-    >
-      <div className="flex items-center">
-        <div
-          className={cn(
-            'opacity-0 left-0 h-6 w-[4px] absolute rounded-r-lg bg-primary',
-            active ? 'opacity-100' : '',
-          )}
-        />
-        <link.icon className="h-3.5 mr-1" />
-        <span>{link.title}</span>
-      </div>
-    </Link>
-  );
-}
 
 function SidebarLinkGroup({
   links,
@@ -51,8 +20,7 @@ function SidebarLinkGroup({
   title?: string;
   border?: boolean;
 }) {
-  const fullPathname = usePathname();
-  const pathname = `/${fullPathname.split('/')[1]}`;
+
 
   return (
     <div className={border ? 'border-border border-t my-8 pt-4' : ''}>
@@ -64,7 +32,14 @@ function SidebarLinkGroup({
       <ul>
         {links.map((link) => (
           <li key={link.title}>
-            <SidebarLink link={link} active={pathname === link.href} />
+            <SidebarLink
+                link={{
+                  title: link.title,
+                  href: link.href,
+                }}
+            >
+              <link.icon className="mr-2 h-4 w-4" />
+            </SidebarLink>
           </li>
         ))}
       </ul>
@@ -72,12 +47,36 @@ function SidebarLinkGroup({
   );
 }
 
-export function SidebarItems() {
+export async function SidebarItems() {
+  const { session } = await getUserAuth();
+
+
   return (
     <>
       <SidebarLinkGroup links={defaultLinks} />
       {additionalLinks.length > 0
         ? additionalLinks.map((l) => (
+          <SidebarLinkGroup
+            links={l.links}
+            title={l.title}
+            border
+            key={l.title}
+          />
+        ))
+        : null}
+
+      {(session?.user.role == UserRole.ADMIN && sellerLinks.length > 0)
+        ? sellerLinks.map((l) => (
+          <SidebarLinkGroup
+            links={l.links}
+            title={l.title}
+            border
+            key={l.title}
+          />
+        ))
+        : null}
+      {(session?.user.role == UserRole.SELLER && brandLink.length > 0)
+        ? brandLink.map((l) => (
           <SidebarLinkGroup
             links={l.links}
             title={l.title}

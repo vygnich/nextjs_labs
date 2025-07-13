@@ -2,12 +2,15 @@ import { Suspense } from 'react';
 
 import Loading from '@/app/(app)/loading';
 import { ProductList } from '@/components/products';
-import { getProducts } from '@/lib/api/products/queries';
+import {getUserOrAllProducts} from '@/lib/api/products/queries';
+import {getUserAuth} from "@/lib/auth/utils";
 
 export const revalidate = 0;
 
 async function Products() {
-  const { products } = await getProducts();
+    const { session } = await getUserAuth();
+
+    const { products } = await getUserOrAllProducts(session?.user.id);
 
   return (
     <Suspense fallback={<Loading />}>

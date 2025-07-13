@@ -11,6 +11,10 @@ import {
   updateProductParams,
 } from '@/lib/db/schema/products';
 import * as Sentry from '@sentry/nextjs';
+import {getUserAuth} from "@/lib/auth/utils";
+import {getProductById} from "@/lib/api/products";
+import {UserRole} from "@prisma/client";
+import db from "@/lib/db";
 
 const handleErrors = (e: unknown) => {
   Sentry.captureException(e);
@@ -54,3 +58,19 @@ export const deleteProductAction = async (input: ProductId) => {
     return handleErrors(e);
   }
 };
+
+export const checkAccessProduct = async (input: ProductId) => {
+  const { session } = await getUserAuth();
+
+  const product = await getProductById(input);
+
+  if(!product || !session?.user) return false
+
+  const brand = await db.brand.findUnique({where: {userId: product.brandId}});
+
+  if(!brand) return false
+
+
+  return brand.userId === session.user.id || session.user.role === UserRole.ADMIN;
+};
+

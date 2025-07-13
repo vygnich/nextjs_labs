@@ -6,6 +6,19 @@ export const getProducts = async () => {
   return { products: p };
 };
 
+export const getUserOrAllProducts = async (userId?: string) => {
+  const brand = await db.brand.findUnique({
+    where: {
+      userId: userId
+    }
+  });
+
+  const p = await db.product.findMany({
+    where: brand ? {brandId: brand.id} : {}
+  });
+  return { products: p };
+};
+
 export const getProductById = async (id: ProductId) => {
   const { id: productId } = productIdSchema.parse({ id });
   const p = await db.product.findFirst({ where: { id: productId } });

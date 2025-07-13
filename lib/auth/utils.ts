@@ -56,9 +56,8 @@ export const getUserAuth = async () => {
 
 export const checkAuth = async () => {
   const { session } = await getUserAuth();
-  console.log(session);
   if (!session) redirect('/api/auth/signin');
-  if (session?.user.role !== 'ADMIN') {
+  if (session?.user.role === 'USER') {
     throw new Error('You need to be an admin');
   }
 };

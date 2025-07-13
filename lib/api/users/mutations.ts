@@ -8,6 +8,9 @@ import {
   userIdSchema,
 } from '@/lib/db/schema/users';
 import * as Sentry from '@sentry/nextjs';
+import { getUserAuth } from '@/lib/auth/utils';
+import {RoleStatus, UserRole} from "@prisma/client";
+
 
 export const createUser = async (user: NewUserParams) => {
   const newUser = insertUserSchema.parse(user);
@@ -47,4 +50,18 @@ export const deleteUser = async (id: UserId) => {
     console.error(message);
     throw new Error(message);
   }
+};
+
+export const updateUserStatus = async (role: UserRole, roleStatus: RoleStatus, userId: string | undefined = undefined) => {
+  if(!userId){
+    const {session} = await getUserAuth()
+    if(!session) return
+    userId = session.user.id!
+  }
+  return  db.user.update({ where: { id: userId },
+    data: {
+      role: role,
+      roleStatus: roleStatus
+    }
+  });
 };
