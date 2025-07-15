@@ -8,7 +8,9 @@ export const insertUserParams = userSchema.extend({}).omit({
 });
 
 export const updateUserSchema = userSchema;
-export const updateUserParams = updateUserSchema.extend({});
+export const updateUserParams = updateUserSchema.extend({}).omit({
+  roleStatus: true
+});
 export const userIdSchema = userSchema.pick({ id: true });
 
 export type User = z.infer<typeof userSchema>;

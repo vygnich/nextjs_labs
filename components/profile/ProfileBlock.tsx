@@ -56,7 +56,7 @@ export function ProfileBlock({ user }: Props) {
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold">Date of Birth</h3>
+              <h3 className="text-lg font-semibold">Дата народження</h3>
               <p>
                 {user?.dateOfBirth && format(user?.dateOfBirth, 'MM / dd / yyyy')}
               </p>
@@ -64,13 +64,13 @@ export function ProfileBlock({ user }: Props) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <h3 className="text-lg font-semibold">Successful Purchases</h3>
+              <h3 className="text-lg font-semibold">Успішні покупки</h3>
               <p className="text-4xl font-bold">
                 {user?.successPurchases ?? 0}
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold">Unsuccessful Purchases</h3>
+              <h3 className="text-lg font-semibold">Неуспішні покупки</h3>
               <p className="text-4xl font-bold">
                 {user?.failPurchases ?? 0}
               </p>
@@ -79,7 +79,7 @@ export function ProfileBlock({ user }: Props) {
           <div className="grid gap-2">
             <form action={handleSubmit} onChange={handleChange}>
               <Label htmlFor="name">
-                Name
+                Ім'я
               </Label>
               <Input
                 name="name"
@@ -87,7 +87,7 @@ export function ProfileBlock({ user }: Props) {
                 defaultValue={user?.name ?? ''}
               />
               <Label htmlFor="dateOfBirth">
-                Date of Birth
+                Дата народження
               </Label>
               <Input
                 name="dateOfBirth"
@@ -100,7 +100,7 @@ export function ProfileBlock({ user }: Props) {
                 className="mt-4"
                 type="submit"
               >
-                {pending ? 'Loading...' : 'Save Changes'}
+                {pending ? 'Loading...' : 'Зберегти'}
               </Button>
             </form>
 

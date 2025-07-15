@@ -32,19 +32,19 @@ export const ConfirmOrderButton = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="bg-app-secondary">Confirm order</Button>
+        <Button className="bg-app-secondary">Погодити замовлення</Button>
       </SheetTrigger>
       <SheetContent className="bg-bg-light">
         <SheetHeader>
-          <SheetTitle>Confirm order</SheetTitle>
+          <SheetTitle>Погодити замовлення</SheetTitle>
           <SheetDescription>
-            Confirm your order and add a comment to the order if desired. Click confirm when you&#39;re done.
+            Підтвердіть замовлення та додайте коментар до замовлення, якщо бажаєте. Натисніть підтвердити.
           </SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-3">
             <Label htmlFor="name" className="text-right">
-              Notes:
+              Нотатки:
             </Label>
             <Input
               id="notes"
@@ -56,7 +56,7 @@ export const ConfirmOrderButton = () => {
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button onClick={clickHandler}>Confirm order</Button>
+            <Button onClick={clickHandler}>Погодити замовлення</Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

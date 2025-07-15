@@ -23,7 +23,7 @@ export default async function CartPage() {
             </>
           ))}
           <Separator />
-          {(total > 0) ? `Total: ${total} грн` : 'There are no products in the cart'}
+          {(total > 0) ? `Загальна: ${total} грн` : 'У кошику немає товарів'}
           <ConfirmOrderButton />
         </ListContainer>
       </LayoutContainer>

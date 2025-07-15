@@ -24,3 +24,21 @@ export const getProductById = async (id: ProductId) => {
   const p = await db.product.findFirst({ where: { id: productId } });
   return { product: p };
 };
+
+
+export async function searchProducts(query: string) {
+  return await db.product.findMany({
+    where: {
+      title: {
+        contains: query,
+        mode: 'insensitive',
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      photo: true,
+      price: true,
+    },
+  });
+}
