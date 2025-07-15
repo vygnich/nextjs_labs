@@ -31,8 +31,22 @@ const revalidateProducts = () => revalidatePath('/products');
 
 export const createProductAction = async (input: NewProductParams) => {
   try {
+    const category = await db.category.findFirst();
+    const { session } = await getUserAuth();
+
+    const brand = await db.brand.findUnique({where: {userId: session?.user.id!}});
+
+
+    input = {
+      ...input,
+      categoryId: category?.id!,
+      brandId: brand?.id!,
+    }
+
+    console.log("input", input)
+
     const payload = insertProductParams.parse(input);
-    await createProduct(payload);
+    await createProduct(input);
     revalidateProducts();
   } catch (e) {
     return handleErrors(e);
@@ -66,10 +80,9 @@ export const checkAccessProduct = async (input: ProductId) => {
 
   if(!product || !session?.user) return false
 
-  const brand = await db.brand.findUnique({where: {userId: product.brandId}});
+  const brand = await db.brand.findUnique({where: {userId: session.user.id}});
 
   if(!brand) return false
-
 
   return brand.userId === session.user.id || session.user.role === UserRole.ADMIN;
 };

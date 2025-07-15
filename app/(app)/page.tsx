@@ -19,7 +19,7 @@ export default async function LandingPage() {
           >
             <div className="max-w-prose text-left">
               <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl">
-                Те, що ти шукаєш
+                Те, що ти
                 <strong className="text-indigo-600"> шукаєш </strong>
                 — уже чекає на тебе тут
               </h1>
@@ -86,21 +86,11 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        <div className="flex flex-col items-center justify-center space-y-4 text-center p-10">
-          <div className="space-y-2">
-            <p className="max-w-[900px] text-neutral-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-neutral-400">
-              We have a variety of designs and colors for every taste and preference of customers.
-              The textile products we sell are made of high-quality materials that ensure durability and preserve the
-              brightness of colors after washing.
-            </p>
-          </div>
-        </div>
-
         <div className="w-full dark:bg-gray-800">
           <div className="container grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12 px-4 md:px-6">
             <CategoryHomeGrid categories={categories.slice(0, 3)}/>
             <div className="bg-bg-dark rounded-lg shadow-lg p-6 dark:bg-gray-950">
-              <h3 className="text-lg font-bold mb-4">Shop by Category</h3>
+              <h3 className="text-lg font-bold mb-4">Категорії</h3>
               <nav className="space-y-2">
                 {categories.map((product: Category) => (
                     <CategoryHomeList category={product} key={product.id}/>

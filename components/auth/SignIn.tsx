@@ -12,20 +12,20 @@ export default function SignIn() {
     return (
       <div className="space-y-3">
         <p>
-          Signed in as
+          Уввійдено під
           {' '}
           <span className="font-medium">{session.user?.email}</span>
         </p>
         <Button variant="destructive" onClick={() => signOut({ callbackUrl: '/' })}>
-          Sign out
+          Вийти
         </Button>
       </div>
     );
   }
   return (
     <div className="space-y-3">
-      <p>Not signed in </p>
-      <Button onClick={() => signIn()}>Sign in</Button>
+      <p>Неввійдено </p>
+      <Button onClick={() => signIn()}>Увійти</Button>
     </div>
   );
 }

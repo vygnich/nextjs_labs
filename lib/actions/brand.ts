@@ -4,7 +4,6 @@ import * as Sentry from "@sentry/nextjs";
 
 export const updateBrandAction = async (input: UpdateBrandParams) => {
     try {
-        console.log("inputupdateBrandAction", input)
         const payload = updateBrandParams.parse(input);
         await updateBrand(payload.id, input);
     } catch (e) {

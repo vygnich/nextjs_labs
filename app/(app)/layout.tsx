@@ -26,6 +26,11 @@ const links = [
     label: 'Категорії',
     icon: ShoppingCartIcon,
   },
+  {
+    href: '/brands',
+    label: 'Бренди',
+    icon: ShoppingCartIcon,
+  },
 ] as const;
 
 export default async function AppLayout({ children }: Props) {
@@ -66,7 +71,7 @@ export default async function AppLayout({ children }: Props) {
                 {(session?.user?.role === UserRole.ADMIN || session?.user?.role === UserRole.SELLER) ? (
                   <Link href="/admin/dashboard">
                     <Button>
-                      Go to dashboard
+                      Інформаційна панель
                     </Button>
                   </Link>
                 ) : (
@@ -128,7 +133,7 @@ export default async function AppLayout({ children }: Props) {
           </div>
         </div>
       </header>
-      <section className="bg-bg-light">
+      <section>
         {children}
       </section>
     </>

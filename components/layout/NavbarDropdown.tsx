@@ -36,15 +36,15 @@ export function NavbarDropdown({ isLoggedIn }: Props) {
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-bg-dark border-app" align="end">
+      <DropdownMenuContent className=" border-app" align="end">
         {isLoggedIn ? (
           <>
-            <DropdownMenuItem onClick={() => router.push('/profile')}>Profile</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push('/orders')}>Orders</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push('/favorites')}>Favorites</DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-app" />
+            <DropdownMenuItem onClick={() => router.push('/profile')}>Профіль</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/orders')}>Замовлення</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/favorites')}>Улюблене</DropdownMenuItem>
+            <DropdownMenuSeparator className="" />
             <DropdownMenuItem onClick={() => signOut()}>
-              Logout
+              Вийти
             </DropdownMenuItem>
             {/* <DropdownMenuItem onClick={() => router.push('/admin/dashboard')}>Dashboard</DropdownMenuItem> */}
           </>

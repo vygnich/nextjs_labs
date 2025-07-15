@@ -10,6 +10,7 @@ import {
 import * as Sentry from '@sentry/nextjs';
 
 export const createProduct = async (product: NewProductParams) => {
+  console.log("product", product)
   const newProduct = insertProductSchema.parse(product);
   try {
     const p = await db.product.create({ data: newProduct });

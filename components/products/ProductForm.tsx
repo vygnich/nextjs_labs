@@ -12,6 +12,7 @@ import { type Action, cn } from '@/lib/utils';
 import { type TAddOptimistic } from '@/app/admin/products/useOptimisticProducts';
 
 import { Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useBackPath } from '@/components/shared/BackButton';
@@ -93,6 +94,7 @@ export function ProductForm({
 
     const payload = Object.fromEntries(data.entries());
     const productParsed = await insertProductParams.safeParseAsync({ ...payload });
+    console.log("productParsed", productParsed)
     if (!productParsed.success) {
       setErrors(productParsed?.error.flatten().fieldErrors);
       return;
@@ -106,6 +108,7 @@ export function ProductForm({
       id: product?.id ?? '',
       ...values,
     };
+
     try {
       startMutation(async () => {
         addOptimistic && addOptimistic({
@@ -116,6 +119,8 @@ export function ProductForm({
         const error = editing
           ? await updateProductAction({ ...values, id: product.id })
           : await createProductAction(values);
+
+        console.log("error", error)
 
         const errorFormatted = {
           error: error ?? 'Error',

@@ -11,6 +11,8 @@ export const insertProductParams = baseSchema.extend({
   price: z.coerce.number(),
 }).omit({
   id: true,
+  categoryId: true,
+  brandId: true,
 });
 
 export const updateProductSchema = baseSchema;

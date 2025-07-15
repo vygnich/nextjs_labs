@@ -7,33 +7,33 @@ interface AdditionalLinks {
 }
 
 export const defaultLinks: SidebarLinkType[] = [
-  { href: '/admin/dashboard', title: 'Home', icon: HomeIcon },
-  { href: '/admin/account', title: 'Account', icon: Cog },
-  { href: '/admin/settings', title: 'Settings', icon: Cog },
+  { href: '/admin/dashboard', title: 'Головна', icon: HomeIcon },
+  { href: '/admin/account', title: 'Профіль', icon: Cog },
+  { href: '/admin/settings', title: 'Налаштування', icon: Cog },
 ] as const;
 
 export const additionalLinks: AdditionalLinks[] = [
   {
-    title: 'Entities',
+    title: 'Суб\'єкти',
     links: [
       {
         href: '/admin/orders',
-        title: 'Orders',
+        title: 'Замовлення',
         icon: Globe,
       },
       {
         href: '/admin/products',
-        title: 'Products',
+        title: 'Продукти',
         icon: Globe,
       },
       {
         href: '/admin/categories',
-        title: 'Categories',
+        title: 'Категорії',
         icon: Globe,
       },
       {
         href: '/admin/feedbacks',
-        title: 'Feedbacks',
+        title: 'Відгуки',
         icon: Globe,
       },
     ],
@@ -43,11 +43,11 @@ export const additionalLinks: AdditionalLinks[] = [
 
 export const sellerLinks: AdditionalLinks[] = [
   {
-    title: 'Sellers',
+    title: 'Запити',
     links: [
       {
         href: '/admin/seller-request',
-        title: 'Seller requests',
+        title: 'Запити на продавця',
         icon: Globe,
       }
     ],
