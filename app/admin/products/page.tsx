@@ -4,6 +4,7 @@ import Loading from '@/app/(app)/loading';
 import { ProductList } from '@/components/products';
 import {getUserOrAllProducts} from '@/lib/api/products/queries';
 import {getUserAuth} from "@/lib/auth/utils";
+import db from "@/lib/db";
 
 export const revalidate = 0;
 
@@ -14,7 +15,7 @@ async function Products() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <ProductList products={products} />
+      <ProductList products={products} categories={await db.category.findMany()} />
     </Suspense>
   );
 }

@@ -12,6 +12,7 @@ import { useOptimisticProducts } from '@/app/admin/products/useOptimisticProduct
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { ProductForm } from './ProductForm';
+import {Category} from "@prisma/client";
 
 type TOpenModal = (product?: Product) => void;
 
@@ -69,8 +70,10 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => (
 
 export function ProductList({
   products,
+  categories
 }: {
   products: CompleteProduct[];
+  categories: Category[];
 }) {
   const { optimisticProducts, addOptimisticProduct } = useOptimisticProducts(
     products,
@@ -95,7 +98,7 @@ export function ProductList({
           addOptimistic={addOptimisticProduct}
           openModal={openModal}
           closeModal={closeModal}
-
+          categories={categories}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
