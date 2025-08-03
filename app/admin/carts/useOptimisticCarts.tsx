@@ -30,9 +30,7 @@ export const useOptimisticCarts = (
       switch (action.action) {
         case 'create':
           // @ts-ignore
-          return currentState.length === 0
-            ? [optimisticCart]
-            : [...currentState, optimisticCart];
+          return currentState.length === 0 ? [optimisticCart] : [...currentState, optimisticCart];
         case 'update':
           // @ts-ignore
           return currentState.map((item) => (item.id === data.id ? { ...item, ...optimisticCart } : item));

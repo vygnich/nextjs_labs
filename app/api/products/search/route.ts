@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import {searchProducts} from "@/lib/api/products/queries";
 
@@ -16,7 +15,6 @@ export async function GET(req: Request) {
 
         return NextResponse.json(products);
     } catch (err) {
-        Sentry.captureException(err);
         if (err instanceof z.ZodError) {
             return NextResponse.json({ error: err.issues }, { status: 400 });
         }

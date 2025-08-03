@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { deleteCategory, updateCategory } from '@/lib/api/categories/mutations';
 import { categoryIdSchema, updateCategoryParams } from '@/lib/db/schema/categories';
 import { getCategories } from '@/lib/api/categories/queries';
-import * as Sentry from '@sentry/nextjs';
 
 export async function GET() {
   return NextResponse.json({ data: getCategories() }, { status: 200 });
@@ -38,7 +37,6 @@ export async function PUT(req: Request) {
 
     return NextResponse.json(category, { status: 200 });
   } catch (err) {
-    Sentry.captureException(err);
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.issues }, { status: 400 });
     }
@@ -56,7 +54,6 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json(category, { status: 200 });
   } catch (err) {
-    Sentry.captureException(err);
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.issues }, { status: 400 });
     }

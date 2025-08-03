@@ -8,7 +8,6 @@ import {
   updateOrderSchema,
 } from '@/lib/db/schema/orders';
 import { getUserAuth } from '@/lib/auth/utils';
-import * as Sentry from '@sentry/nextjs';
 import { getCarts } from '@/lib/api/carts/queries';
 
 export const createOrder = async (order: NewOrderParams) => {
@@ -18,7 +17,6 @@ export const createOrder = async (order: NewOrderParams) => {
     const o = await db.order.create({ data: newOrder });
     return { order: o };
   } catch (err) {
-    Sentry.captureException(err);
     const message = (err as Error).message ?? 'Error, please try again';
     console.error(message);
     throw Error(message);
@@ -48,7 +46,6 @@ export const createUserOrder = async (notes: string) => {
     });
     // console.log({ order });
   } catch (err) {
-    Sentry.captureException(err);
     const message = (err as Error).message ?? 'Error, please try again';
     console.error(message);
     throw Error(message);
@@ -66,7 +63,6 @@ export const updateOrder = async (id: OrderId, order: UpdateOrderParams) => {
     });
     return { order: o };
   } catch (err) {
-    Sentry.captureException(err);
     const message = (err as Error).message ?? 'Error, please try again';
     console.error(message);
     throw Error(message);
@@ -80,7 +76,6 @@ export const deleteOrder = async (id: OrderId) => {
     const o = await db.order.delete({ where: { id: orderId, userId: session?.user.id! } });
     return { order: o };
   } catch (err) {
-    Sentry.captureException(err);
     const message = (err as Error).message ?? 'Error, please try again';
     console.error(message);
     throw Error(message);

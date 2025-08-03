@@ -23,9 +23,7 @@ export function useOptimisticCategories(
 
       switch (action.action) {
         case 'create':
-          return currentState.length === 0
-            ? [optimisticCategory as CompleteCategory]
-            : [...currentState, optimisticCategory as CompleteCategory];
+          return currentState.length === 0 ? [optimisticCategory as CompleteCategory] : [...currentState, optimisticCategory as CompleteCategory];
         case 'update':
           return currentState.map((item) => (item.id === data.id ? { ...item, ...optimisticCategory } : item));
         case 'delete':

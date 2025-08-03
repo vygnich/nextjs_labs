@@ -7,6 +7,7 @@ import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/(app)/loading';
 import OptimisticProduct from './OptimisticProduct';
 import {checkAccessProduct} from "@/lib/actions/products";
+import db from "@/lib/db";
 
 export const revalidate = 0;
 
@@ -21,7 +22,7 @@ async function Product({ id }: { id: string }) {
     <Suspense fallback={<Loading />}>
       <div className="relative">
         <BackButton currentResource="products" />
-        <OptimisticProduct product={product} />
+        <OptimisticProduct product={product} categories={await db.category.findMany()} />
       </div>
     </Suspense>
   );

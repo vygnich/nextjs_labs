@@ -22,9 +22,7 @@ export function useOptimisticOrders(
 
       switch (action.action) {
         case 'create':
-          return currentState.length === 0
-            ? [optimisticOrder as CompleteOrder]
-            : [...currentState, optimisticOrder as CompleteOrder];
+          return currentState.length === 0 ? [optimisticOrder as CompleteOrder] : [...currentState, optimisticOrder as CompleteOrder];
         case 'update':
           return currentState.map((item) => (item.id === data.id
             ? { ...item, ...optimisticOrder }

@@ -21,6 +21,7 @@ export const deleteProduct = async (id: string) => {
 };
 
 export const updateProduct = async (data: any) => {
+  console.log("data", data)
   const product = await db.product.update({ where: { id: data.id }, data });
   return product;
 };

@@ -18,7 +18,6 @@ import { useBackPath } from '@/components/shared/BackButton';
 
 import { insertBrandParams, type Brand } from '@/lib/db/schema/brand';
 import { updateBrandAction } from '@/lib/actions/brand';
-import * as Sentry from '@sentry/nextjs';
 
 function SaveButton({
   editing,
@@ -120,7 +119,6 @@ export function BrandForm({
         );
       });
     } catch (e) {
-      Sentry.captureException(e);
       if (e instanceof z.ZodError) {
         setErrors(e.flatten().fieldErrors);
       }

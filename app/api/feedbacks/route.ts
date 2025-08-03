@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 import { createFeedback, deleteFeedback, updateFeedback } from '@/lib/api/feedbacks/mutations';
 import { feedbackIdSchema, insertFeedbackParams, updateFeedbackParams } from '@/lib/db/schema/feedbacks';
-import * as Sentry from '@sentry/nextjs';
 
 export async function POST(req: Request) {
   try {
@@ -15,7 +14,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(feedback, { status: 201 });
   } catch (err) {
-    Sentry.captureException(err);
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.issues }, { status: 400 });
     }
@@ -35,7 +33,6 @@ export async function PUT(req: Request) {
 
     return NextResponse.json(feedback, { status: 200 });
   } catch (err) {
-    Sentry.captureException(err);
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.issues }, { status: 400 });
     }
@@ -53,7 +50,6 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json(feedback, { status: 200 });
   } catch (err) {
-    Sentry.captureException(err);
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.issues }, { status: 400 });
     }

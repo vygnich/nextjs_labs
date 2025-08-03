@@ -3,11 +3,10 @@ import {
   insertProductSchema,
   NewProductParams,
   ProductId,
-  productIdSchema,
+  productIdSchema, updateProductParams,
   UpdateProductParams,
   updateProductSchema,
 } from '@/lib/db/schema/products';
-import * as Sentry from '@sentry/nextjs';
 
 export const createProduct = async (product: NewProductParams) => {
   console.log("product", product)
@@ -16,7 +15,6 @@ export const createProduct = async (product: NewProductParams) => {
     const p = await db.product.create({ data: newProduct });
     return { product: p };
   } catch (err) {
-    Sentry.captureException(err);
     const message = (err as Error).message ?? 'Error, please try again';
     console.error(message);
     throw new Error(message);
@@ -24,13 +22,16 @@ export const createProduct = async (product: NewProductParams) => {
 };
 
 export const updateProduct = async (id: ProductId, product: UpdateProductParams) => {
+  console.log("updateProduct")
   const { id: productId } = productIdSchema.parse({ id });
-  const newProduct = updateProductSchema.parse(product);
+  console.log("productId", productId)
+  console.log("product", product)
+  const newProduct = updateProductParams.parse(product);
+  console.log("newProduct", newProduct)
   try {
     const p = await db.product.update({ where: { id: productId }, data: newProduct });
     return { product: p };
   } catch (err) {
-    Sentry.captureException(err);
     const message = (err as Error).message ?? 'Error, please try again';
     console.error(message);
     throw new Error(message);
@@ -43,7 +44,6 @@ export const deleteProduct = async (id: ProductId) => {
     const p = await db.product.delete({ where: { id: productId } });
     return { product: p };
   } catch (err) {
-    Sentry.captureException(err);
     const message = (err as Error).message ?? 'Error, please try again';
     console.error(message);
     throw new Error(message);

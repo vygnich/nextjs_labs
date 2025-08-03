@@ -6,15 +6,15 @@ import { getBrands } from '@/lib/api/brand/queries';
 // Schema for products - used to validate API requests
 const baseSchema = brandSchema.omit({});
 
-export const insertBrandSchema = baseSchema.omit({ id: true, userId: true});
-export const insertBrandParams = baseSchema.omit({
+export const insertBrandSchema = baseSchema.partial({ id: true, userId: true});
+export const insertBrandParams = baseSchema.partial({
   id: true,
   userId: true
 });
 
 export const updateBrandSchema = baseSchema;
 export const updateBrandParams = updateBrandSchema.extend({
-}).omit({ userId: true});
+}).partial({ userId: true});
 export const brandIdSchema = baseSchema.pick({ id: true });
 
 // Types for products - used to type API request params and within Components

@@ -24,9 +24,7 @@ export function useOptimisticProducts(
       switch (action.action) {
         case 'create':
           // @ts-ignore
-          return currentState.length === 0
-            ? [optimisticProduct]
-            : [...currentState, optimisticProduct];
+          return currentState.length === 0 ? [optimisticProduct] : [...currentState, optimisticProduct];
         case 'update':
           return currentState.map((item) => (item.id === data.id ? { ...item, ...optimisticProduct } : item));
         case 'delete':

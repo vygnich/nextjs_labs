@@ -8,11 +8,15 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/shared/Modal';
 import { ProductForm } from '@/components/products';
+import db from "@/lib/db";
+import {Category} from "@prisma/client";
 
-export default function OptimisticProduct({
+export default async function OptimisticProduct({
   product,
+  categories
 }: {
   product: Product;
+  categories: Category[];
 }) {
   const [open, setOpen] = useState(false);
   const openModal = () => {
@@ -30,6 +34,7 @@ export default function OptimisticProduct({
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateProduct}
+          categories={categories}
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">

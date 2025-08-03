@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 
-import { useState, useTransition } from 'react';
+import {useEffect, useState, useTransition} from 'react';
 import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -12,18 +12,19 @@ import { type Action, cn } from '@/lib/utils';
 import { type TAddOptimistic } from '@/app/admin/products/useOptimisticProducts';
 
 import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useBackPath } from '@/components/shared/BackButton';
 
 import { insertProductParams, type Product } from '@/lib/db/schema/products';
 import { createProductAction, deleteProductAction, updateProductAction } from '@/lib/actions/products';
-import * as Sentry from '@sentry/nextjs';
+import {Category} from "@prisma/client";
+import db from "@/lib/db";
 
 function SaveButton({
   editing,
-  errors,
+  errors
 }: {
   editing: Boolean;
   errors: boolean;
@@ -52,14 +53,16 @@ export function ProductForm({
   closeModal,
   addOptimistic,
   postSuccess,
+  categories
 }: {
   product?: Product | null;
-
+  categories: Category[];
   openModal?: (product?: Product) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
   postSuccess?: () => void;
 }) {
+
   const {
     errors, hasErrors, setErrors, handleChange,
   } = useValidatedForm<Product>(insertProductParams);
@@ -94,7 +97,6 @@ export function ProductForm({
 
     const payload = Object.fromEntries(data.entries());
     const productParsed = await insertProductParams.safeParseAsync({ ...payload });
-    console.log("productParsed", productParsed)
     if (!productParsed.success) {
       setErrors(productParsed?.error.flatten().fieldErrors);
       return;
@@ -106,6 +108,8 @@ export function ProductForm({
       updatedAt: product?.updatedAt ?? new Date(),
       createdAt: product?.createdAt ?? new Date(),
       id: product?.id ?? '',
+      categoryId: '',
+      brandId: '',
       ...values,
     };
 
@@ -120,8 +124,6 @@ export function ProductForm({
           ? await updateProductAction({ ...values, id: product.id })
           : await createProductAction(values);
 
-        console.log("error", error)
-
         const errorFormatted = {
           error: error ?? 'Error',
           values: pendingProduct,
@@ -132,7 +134,6 @@ export function ProductForm({
         );
       });
     } catch (e) {
-      Sentry.captureException(e);
       if (e instanceof z.ZodError) {
         setErrors(e.flatten().fieldErrors);
       }
@@ -140,123 +141,152 @@ export function ProductForm({
   };
 
   return (
-    <form action={handleSubmit} onChange={handleChange} className="space-y-8">
-      {/* Schema fields start */}
-      <div>
-        <Label
-          className={cn(
-            'mb-2 inline-block',
-            errors?.title ? 'text-destructive' : '',
+      <form action={handleSubmit} onChange={handleChange} className="space-y-8">
+        {/* Schema fields start */}
+        <div>
+          <Label
+              className={cn(
+                  'mb-2 inline-block',
+                  errors?.title ? 'text-destructive' : '',
+              )}
+          >
+            Назва
+          </Label>
+          <Input
+              type="text"
+              name="title"
+              className={cn(errors?.title ? 'ring ring-destructive' : '')}
+              defaultValue={product?.title ?? ''}
+          />
+          {errors?.title ? (
+              <p className="text-xs text-destructive mt-2">{errors.title[0]}</p>
+          ) : (
+              <div className="h-6"/>
           )}
-        >
-          Title
-        </Label>
-        <Input
-          type="text"
-          name="title"
-          className={cn(errors?.title ? 'ring ring-destructive' : '')}
-          defaultValue={product?.title ?? ''}
-        />
-        {errors?.title ? (
-          <p className="text-xs text-destructive mt-2">{errors.title[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div>
-      <div>
-        <Label
-          className={cn(
-            'mb-2 inline-block',
-            errors?.description ? 'text-destructive' : '',
+        </div>
+        <div>
+          <Label
+              className={cn(
+                  'mb-2 inline-block',
+                  errors?.description ? 'text-destructive' : '',
+              )}
+          >
+            Опис
+          </Label>
+          <Input
+              type="text"
+              name="description"
+              className={cn(errors?.description ? 'ring ring-destructive' : '')}
+              defaultValue={product?.description ?? ''}
+          />
+          {errors?.description ? (
+              <p className="text-xs text-destructive mt-2">{errors.description[0]}</p>
+          ) : (
+              <div className="h-6"/>
           )}
-        >
-          Description
-        </Label>
-        <Input
-          type="text"
-          name="description"
-          className={cn(errors?.description ? 'ring ring-destructive' : '')}
-          defaultValue={product?.description ?? ''}
-        />
-        {errors?.description ? (
-          <p className="text-xs text-destructive mt-2">{errors.description[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div>
-      <div>
-        <Label
-          className={cn(
-            'mb-2 inline-block',
-            errors?.photo ? 'text-destructive' : '',
+        </div>
+        <div>
+          <Label
+              className={cn(
+                  'mb-2 inline-block',
+                  errors?.photo ? 'text-destructive' : '',
+              )}
+          >
+            Фото
+          </Label>
+          <Input
+              type="text"
+              name="photo"
+              className={cn(errors?.photo ? 'ring ring-destructive' : '')}
+              defaultValue={product?.photo ?? ''}
+          />
+          {errors?.photo ? (
+              <p className="text-xs text-destructive mt-2">{errors.photo[0]}</p>
+          ) : (
+              <div className="h-6"/>
           )}
-        >
-          Photo
-        </Label>
-        <Input
-          type="text"
-          name="photo"
-          className={cn(errors?.photo ? 'ring ring-destructive' : '')}
-          defaultValue={product?.photo ?? ''}
-        />
-        {errors?.photo ? (
-          <p className="text-xs text-destructive mt-2">{errors.photo[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div>
-      <div>
-        <Label
-          className={cn(
-            'mb-2 inline-block',
-            errors?.price ? 'text-destructive' : '',
+        </div>
+        <div>
+          <Label
+              className={cn(
+                  'mb-2 inline-block',
+                  errors?.price ? 'text-destructive' : '',
+              )}
+          >
+            Ціна
+          </Label>
+          <Input
+              type="text"
+              name="price"
+              className={cn(errors?.price ? 'ring ring-destructive' : '')}
+              defaultValue={product?.price ?? ''}
+          />
+          {errors?.price ? (
+              <p className="text-xs text-destructive mt-2">{errors.price[0]}</p>
+          ) : (
+              <div className="h-6"/>
           )}
-        >
-          Price
-        </Label>
-        <Input
-          type="text"
-          name="price"
-          className={cn(errors?.price ? 'ring ring-destructive' : '')}
-          defaultValue={product?.price ?? ''}
-        />
-        {errors?.price ? (
-          <p className="text-xs text-destructive mt-2">{errors.price[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div>
-      {/* Schema fields end */}
+        </div>
+        <div>
+          <Label
+              className={cn(
+                  'mb-2 inline-block',
+                  errors?.categoryId ? 'text-destructive' : '',
+              )}
+          >
+            Категорія
+          </Label>
+          <Select defaultValue={product?.categoryId || categories[0].id} name="productId">
+            <SelectTrigger
+                className={cn(errors?.categoryId ? 'ring ring-destructive' : '')}
+            >
+              <SelectValue placeholder="Select a product" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories?.map(({id, title}) => (
+                  <SelectItem key={id} value={id.toString()}>
+                    {title}
+                  </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.categoryId ? (
+              <p className="text-xs text-destructive mt-2">{errors.categoryId[0]}</p>
+          ) : (
+              <div className="h-6" />
+          )}
+        </div>
+        {/* Schema fields end */}
 
-      {/* Save Button */}
-      <SaveButton errors={hasErrors} editing={editing} />
+        {/* Save Button */}
+        <SaveButton errors={hasErrors} editing={editing}/>
 
-      {/* Delete Button */}
-      {editing ? (
-        <Button
-          type="button"
-          disabled={isDeleting || pending || hasErrors}
-          variant="destructive"
-          onClick={() => {
-            setIsDeleting(true);
-            closeModal && closeModal();
-            startMutation(async () => {
-              addOptimistic && addOptimistic({ action: 'delete', data: product });
-              const error = await deleteProductAction(product.id);
-              setIsDeleting(false);
-              const errorFormatted = {
-                error: error ?? 'Error',
-                values: product,
-              };
+        {/* Delete Button */}
+        {editing ? (
+            <Button
+                type="button"
+                disabled={isDeleting || pending || hasErrors}
+                variant="destructive"
+                onClick={() => {
+                  setIsDeleting(true);
+                  closeModal && closeModal();
+                  startMutation(async () => {
+                    addOptimistic && addOptimistic({action: 'delete', data: product});
+                    const error = await deleteProductAction(product.id);
+                    setIsDeleting(false);
+                    const errorFormatted = {
+                      error: error ?? 'Error',
+                      values: product,
+                    };
 
-              onSuccess('delete', error ? errorFormatted : undefined);
-            });
-          }}
-        >
-          Delet
-          {isDeleting ? 'ing...' : 'e'}
-        </Button>
-      ) : null}
-    </form>
+                    onSuccess('delete', error ? errorFormatted : undefined);
+                  });
+                }}
+            >
+              Delet
+              {isDeleting ? 'ing...' : 'e'}
+            </Button>
+        ) : null}
+      </form>
   );
 }

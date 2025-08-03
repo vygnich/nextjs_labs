@@ -30,9 +30,7 @@ export function useOptimisticFeedbacks(
       switch (action.action) {
         case 'create':
           // @ts-ignore
-          return currentState.length === 0
-            ? [optimisticFeedback]
-            : [...currentState, optimisticFeedback];
+          return currentState.length === 0 ? [optimisticFeedback] : [...currentState, optimisticFeedback];
         case 'update':
           // @ts-ignore
           return currentState.map((item) => (item.id === data.id ? { ...item, ...optimisticFeedback } : item));

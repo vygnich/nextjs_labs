@@ -9,7 +9,7 @@ const baseSchema = productSchema.omit(timestamps);
 export const insertProductSchema = baseSchema.omit({ id: true });
 export const insertProductParams = baseSchema.extend({
   price: z.coerce.number(),
-}).omit({
+}).partial({
   id: true,
   categoryId: true,
   brandId: true,
@@ -18,7 +18,12 @@ export const insertProductParams = baseSchema.extend({
 export const updateProductSchema = baseSchema;
 export const updateProductParams = updateProductSchema.extend({
   price: z.coerce.number(),
+}).partial({
+  id: true,
+  categoryId: true,
+  brandId: true,
 });
+
 export const productIdSchema = baseSchema.pick({ id: true });
 
 // Types for products - used to type API request params and within Components

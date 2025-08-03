@@ -12,12 +12,10 @@ import {
   UpdateOrderParams,
   updateOrderParams,
 } from '@/lib/db/schema/orders';
-import * as Sentry from '@sentry/nextjs';
 import { ProductId } from '@/lib/db/schema/products';
 import { clearCartByUserId, deleteCartByProductId } from '@/lib/api/carts/mutations';
 
 const handleErrors = (e: unknown) => {
-  Sentry.captureException(e);
   const errMsg = 'Error, please try again.';
   if (e instanceof Error) return e.message.length > 0 ? e.message : errMsg;
   if (e && typeof e === 'object' && 'error' in e) {

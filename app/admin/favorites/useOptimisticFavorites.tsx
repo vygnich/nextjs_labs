@@ -30,9 +30,7 @@ export const useOptimisticFavorites = (
       switch (action.action) {
         case 'create':
           // @ts-ignore
-          return currentState.length === 0
-            ? [optimisticFavorite]
-            : [...currentState, optimisticFavorite];
+          return currentState.length === 0 ? [optimisticFavorite] : [...currentState, optimisticFavorite];
         case 'update':
           // @ts-ignore
           return currentState.map((item) => (item.id === data.id ? { ...item, ...optimisticFavorite } : item));

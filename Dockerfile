@@ -1,29 +1,33 @@
+# 1. Install dependencies (in Linux container environment)
 FROM node:18 AS deps
 WORKDIR /app
 
-# Copy package files AND prisma directory before install
 COPY package.json package-lock.json* ./
 COPY prisma ./prisma
 
 RUN npm install --legacy-peer-deps
 
-# Now copy the rest of the app
+# 2. Copy all source code and build the Next.js app
+FROM node:18 AS builder
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 RUN npm run build
 
-# Prepare production image
+# 3. Prepare minimal production image
 FROM node:18 AS runner
 WORKDIR /app
 
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/prisma ./prisma
-COPY --from=deps /app/package.json ./package.json
-COPY --from=deps /app/public ./public
-COPY --from=deps /app/.next ./.next
-COPY --from=deps /app/.env ./.env
-
 ENV NODE_ENV=production
 EXPOSE 3000
+
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/.env ./.env
 
 CMD ["npm", "start"]
